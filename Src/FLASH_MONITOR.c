@@ -15,9 +15,10 @@ uint32_t readFlash(uint32_t addr)
 
 void flashCheckState(commandState cmd, uint32_t flashAddr, uint32_t data, int dataSize)
 {
+  uint32_t i;
 	flashState *flash;
-	flash = (flashState *)malloc(2*KB);
-  flash->blockSize = 2*KB;
+	flash = (flashState *)malloc(FLASH_MEM);
+  flash->blockSize = FLASH_MEM;
 	flash->dataAddr = &flash;
 	
   while(flash->blockSize == 0 || flash->dataAddr == 0);
@@ -26,7 +27,7 @@ void flashCheckState(commandState cmd, uint32_t flashAddr, uint32_t data, int da
 	switch(cmd)
 	{
 		case WRITE_DATA:
-      if(flashAddr >= &flash && flashAddr <= (&flash + (flash->blockSize / 4)))
+      if(flashAddr >= &flash && flashAddr <= (&flash + (FLASH_MEM / 4)))
       {
         flash->dataSize = dataSize;
         writeFlash(flashAddr, data);
@@ -34,5 +35,9 @@ void flashCheckState(commandState cmd, uint32_t flashAddr, uint32_t data, int da
       else
         throwError(1, "Error: Invalid flash address given by user!");
 			break;
+      
+    case MASS_ERASE:
+      flashMassErase(flash->dataAddr);
+      break;
 	}
 }

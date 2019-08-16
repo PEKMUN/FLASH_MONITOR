@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #define KB	1024 
+#define FLASH_MEM   2*KB
 
 // Error number
 #define INVALID_ADDRESS	1
