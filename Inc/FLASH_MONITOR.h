@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #define KB	1024 
-#define FLASH_MEM   2*KB
+#define FLASH_MEM   (1*KB)
 
 // Error number
 #define INVALID_ADDRESS	1
@@ -17,8 +17,8 @@ typedef enum {
   PAGE_ERASE,
 } commandState;
 
-typedef struct flashState flashState;
-struct flashState {
+typedef struct FlashState FlashState;
+struct FlashState {
 	commandState command;
 	uint32_t dataAddr;
 	int blockSize;

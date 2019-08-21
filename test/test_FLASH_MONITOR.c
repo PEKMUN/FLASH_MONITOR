@@ -17,7 +17,8 @@ void fake_flashMassErase(uint32_t banks)
 {
   uint32_t i;
   int *ptr = (int *)banks;
-  for(i=0 ; i<(FLASH_MEM/4) ; i++)
+  volatile int a = FLASH_MEM/4;
+  for(i=0 ; i<a ; i++)
   {
     *ptr = 0xffffffff;
     ptr++;
@@ -63,8 +64,8 @@ void test_flashCheckState_given_0x66fb58_expect_return_correct_data(void)
   flashFakeSeq();
   
   Try {
-    flashCheckState(WRITE_DATA, 0x66fb58, 0x123, 1);
-    data = readFlash(0x66fb58);
+    flashCheckState(WRITE_DATA, 0x414b70, 0x123, 1);
+    data = readFlash(0x414b70);
     TEST_ASSERT_EQUAL(0x123, data);
   } Catch(ex) {
 		TEST_FAIL_MESSAGE(ex->errorMsg);
@@ -97,9 +98,9 @@ void test_flashCheckState_given_command_mass_erase_expect_all_the_data_is_clear_
   
   Try {
     flashCheckState(MASS_ERASE, 0, 0, 0);
-    TEST_ASSERT_EQUAL(0, readFlash(0x66f854));
-    TEST_ASSERT_EQUAL(0, readFlash(0x66fb58));
-    TEST_ASSERT_EQUAL(0, readFlash(0x670000));
+    TEST_ASSERT_EQUAL(0xffffffff, readFlash(0x414b70));
+    TEST_ASSERT_EQUAL(0xffffffff, readFlash(0x414b75));
+    TEST_ASSERT_EQUAL(0xffffffff, readFlash(0x414b8b));
   } Catch(ex) {
 		TEST_FAIL_MESSAGE(ex->errorMsg);
   }
