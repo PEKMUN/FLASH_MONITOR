@@ -5,6 +5,9 @@
 #include <stdint.h>
 #include <malloc.h>
 
+
+uint32_t dataAddr = (uint32_t *)malloc(FLASH_MEM);
+
 uint32_t readFlash(uint32_t addr)
 {
   uint32_t data;
@@ -17,9 +20,8 @@ void flashCheckState(commandState cmd, uint32_t flashAddr, uint32_t data, int da
 {
   uint32_t i;
 	flashState *flash;
-	flash = (flashState *)malloc(FLASH_MEM);
   flash->blockSize = FLASH_MEM;
-	flash->dataAddr = &flash;
+	flash->dataAddr = dataAddr;
 	
   while(flash->blockSize == 0 || flash->dataAddr == 0);
   flash->command = TARGET_READY;
