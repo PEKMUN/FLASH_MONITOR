@@ -32,6 +32,11 @@
 /* Entry Point */
 ENTRY(Reset_Handler)
 
+/* This is the address of the monitor communication window.
+   The address of the .monitor_data is at absolute address
+   0x200001b4 */
+_monitor_data_offset = 0x01b4;
+
 /* Highest address of the user mode stack */
 _estack = 0x20005000;    /* end of RAM */
 /* Generate a link error if heap and stack don't fit into RAM */
@@ -116,6 +121,10 @@ SECTIONS
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data : 
   {
+    . = ALIGN(4);
+    . = . + _monitor_data_offset;
+    *(.monitor_data);
+    *(.monitor_data*);
     . = ALIGN(4);
     _sdata = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */

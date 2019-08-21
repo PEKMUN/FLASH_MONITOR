@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define KB	1024 
-#define FLASH_MEM   (1*KB)
+#define KB	                  1024
+#define TRANFER_BUFFER_SIZE   (1*KB)
 
 // Error number
 #define INVALID_ADDRESS	1
@@ -25,6 +25,8 @@ struct FlashState {
 	uint32_t flashAddr;
 	int dataSize;
 };
+
+extern uint8_t transferBuffer[];
 
 uint32_t readFlash(uint32_t addr);
 void flashCheckState(commandState cmd, uint32_t flashAddr, uint32_t data, int dataSize);

@@ -5,7 +5,11 @@
 #include <stdint.h>
 #include <malloc.h>
 
-FlashState *flash;
+uint8_t transferBuffer[TRANFER_BUFFER_SIZE];
+__attribute__((section(".monitor_data"))) volatile FlashState flashState = {
+  TARGET_NOT_READY, 0x0, 0, 0, 0
+};
+
 
 uint32_t readFlash(uint32_t addr)
 {
@@ -15,30 +19,39 @@ uint32_t readFlash(uint32_t addr)
   return data;
 }
 
+// void flashCheckState(void )
 void flashCheckState(commandState cmd, uint32_t flashAddr, uint32_t data, int dataSize)
 {
   uint32_t i;
-	flash = (FlashState *)malloc(FLASH_MEM);
-  flash->blockSize = FLASH_MEM;
-	flash->dataAddr = &flash;
 	
-  while(flash->blockSize == 0 || flash->dataAddr == 0);
-  flash->command = TARGET_READY;
-	
-	switch(cmd)
+	switch(flashState.command)
 	{
+	  case TARGET_NOT_READY:
+	    flashState.blockSize = TRANFER_BUFFER_SIZE;
+	    flashState.dataAddr = (uint32_t)transferBuffer;
+	    flashState.command = TARGET_READY;
+	    break;
+
 		case WRITE_DATA:
       if(flashAddr >= &flash && flashAddr <= (&flash + (FLASH_MEM / 4)))
       {
-        flash->dataSize = dataSize;
+        flashState.dataSize = dataSize;
         writeFlash(flashAddr, data);
       }
       else
         throwError(1, "Error: Invalid flash address given by user!");
+      flashState.command = TARGET_READY;          // Don't touch this
 			break;
       
     case MASS_ERASE:
-      flashMassErase(flash->dataAddr);
+      flashMassErase(flashState.dataAddr);        // <- change this
+      flashState.command = TARGET_READY;          // Don't touch this
+      break;
+
+    case TARGET_READY:
+      break;
+
+    default:
       break;
 	}
 }
