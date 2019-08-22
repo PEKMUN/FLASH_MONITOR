@@ -4,7 +4,8 @@
 #include <stdio.h>
 
 #define KB	                  1024
-#define TRANFER_BUFFER_SIZE   (1*KB)
+#define TRANFER_BUFFER_SIZE   (2*KB)
+#define FLASH_PAGE_SIZE		    0x400U
 
 // Error number
 #define INVALID_ADDRESS	1
@@ -29,6 +30,6 @@ struct FlashState {
 extern uint8_t transferBuffer[];
 
 uint32_t readFlash(uint32_t addr);
-void flashCheckState(void);
+void flashCheckState(int data);
 
 #endif // _FLASH_MONITOR_H

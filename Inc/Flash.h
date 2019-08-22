@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 void writeFlash(uint32_t addr, uint32_t data);
-void flashMassErase(uint32_t banks);
+void flashMassErase();
+void flashPageErase(uint32_t pageAddress);
 
 #endif // _FLASH_H

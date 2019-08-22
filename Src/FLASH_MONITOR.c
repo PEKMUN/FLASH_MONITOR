@@ -20,8 +20,9 @@ uint32_t readFlash(uint32_t addr)
 }
 
 // void flashCheckState(void )
-void flashCheckState(void)
+void flashCheckState(int data)
 {
+	volatile int i;
 	switch(flashState.command)
 	{
 	  case TARGET_NOT_READY:
@@ -30,26 +31,26 @@ void flashCheckState(void)
 	    flashState.command = TARGET_READY;
 	    break;
 
-		case WRITE_DATA:
-      if(flashAddr >= &flash && flashAddr <= (&flash + (TRANFER_BUFFER_SIZE / 4)))
-      {
-        flashState.dataSize = dataSize;
-        writeFlash(flashAddr, data);
-      }
-      else
-        throwError(1, "Error: Invalid flash address given by user!");
-      flashState.command = TARGET_READY;          // Don't touch this
-			break;
-      
-    case MASS_ERASE:
-      flashMassErase(flashState.dataAddr);        // <- change this
-      flashState.command = TARGET_READY;          // Don't touch this
-      break;
+	  case WRITE_DATA:
+		if(flashState.flashAddr >= flashState.dataAddr && flashState.flashAddr <= flashState.dataAddr+(TRANFER_BUFFER_SIZE/4))
+			for(i=0 ; i<(flashState.dataSize/4) ; i++)
+			{
+				writeFlash(flashState.flashAddr, data);
+			}
+		else
+			throwError(1, "Error: Invalid flash address given by user!");
+		flashState.command = TARGET_READY;          // Don't touch this
+		break;
 
-    case TARGET_READY:
-      break;
+	  case MASS_ERASE:
+		flashMassErase();
+		flashState.command = TARGET_READY;          // Don't touch this
+		break;
 
-    default:
-      break;
+	  case TARGET_READY:
+		  break;
+
+	  default:
+		  break;
 	}
 }
