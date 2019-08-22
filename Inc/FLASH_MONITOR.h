@@ -29,6 +29,6 @@ struct FlashState {
 extern uint8_t transferBuffer[];
 
 uint32_t readFlash(uint32_t addr);
-void flashCheckState(commandState cmd, uint32_t flashAddr, uint32_t data, int dataSize);
+void flashCheckState(void);
 
 #endif // _FLASH_MONITOR_H

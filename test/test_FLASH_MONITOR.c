@@ -17,7 +17,7 @@ void fake_flashMassErase(uint32_t banks)
 {
   uint32_t i;
   int *ptr = (int *)banks;
-  volatile int a = FLASH_MEM/4;
+  volatile int a = TRANFER_BUFFER_SIZE/4;
   for(i=0 ; i<a ; i++)
   {
     *ptr = 0xffffffff;

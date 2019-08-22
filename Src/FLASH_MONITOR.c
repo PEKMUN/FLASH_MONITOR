@@ -20,10 +20,8 @@ uint32_t readFlash(uint32_t addr)
 }
 
 // void flashCheckState(void )
-void flashCheckState(commandState cmd, uint32_t flashAddr, uint32_t data, int dataSize)
+void flashCheckState(void)
 {
-  uint32_t i;
-	
 	switch(flashState.command)
 	{
 	  case TARGET_NOT_READY:
@@ -33,7 +31,7 @@ void flashCheckState(commandState cmd, uint32_t flashAddr, uint32_t data, int da
 	    break;
 
 		case WRITE_DATA:
-      if(flashAddr >= &flash && flashAddr <= (&flash + (FLASH_MEM / 4)))
+      if(flashAddr >= &flash && flashAddr <= (&flash + (TRANFER_BUFFER_SIZE / 4)))
       {
         flashState.dataSize = dataSize;
         writeFlash(flashAddr, data);
