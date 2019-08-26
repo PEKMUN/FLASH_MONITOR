@@ -1,6 +1,7 @@
 #include "FLASH_MONITOR.h"
 #include "CException.h"
 #include "Exception.h"
+#include "Flash.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <malloc.h>
@@ -18,6 +19,12 @@ uint32_t readFlash(uint32_t addr)
   data = *ptr;
   return data;
 }
+
+/*
+void initFlashState() {
+
+}
+*/
 
 // void runMonitor(void )
 void flashCheckState(void)

@@ -122,11 +122,11 @@ SECTIONS
   .data : 
   {
     . = ALIGN(4);
+    _sdata = .;        /* create a global symbol at data start */    
     . = . + _monitor_data_offset;
     *(.monitor_data);
     *(.monitor_data*);
     . = ALIGN(4);
-    _sdata = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
 

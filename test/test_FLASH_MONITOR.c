@@ -20,7 +20,7 @@ void fake_flashMassErase()
 {
   uint32_t i;
   int *ptr = flashState.flashAddr;
-  //volatile int a = TRANFER_BUFFER_SIZE/4;
+  //volatile int a = TOTAL_FLASH_SIZE/4;
   for(i=0 ; i<TOTAL_FLASH_SIZE/4 ; i++)
   {
     *ptr = 0xffffffff;
@@ -91,19 +91,21 @@ void test_flashCheckState_given_dataSize_2KB_WRITE_DATA_expect_all_data_in_dataA
   
   flashCheckState();
   TEST_ASSERT_EQUAL_HEX32_ARRAY(flashState.dataAddr, flashState.flashAddr, flashState.dataSize/sizeof(uint32_t));
+  free(flashState.flashAddr);
 }
 
 void test_flashCheckState_given_MASS_ERASE_expect_all_the_data_is_clear_to_0xffffffff(void)
 {
-  uint8_t *dst = (uint8_t *)flashState.flashAddr;
   uint32_t data;
-  
+  uint8_t *dst;
   flashFakeSeq();
   flashState.command = MASS_ERASE;
   flashState.flashAddr = (uint32_t)malloc(TOTAL_FLASH_SIZE);
+  dst = (uint8_t *)flashState.flashAddr;
   
   flashCheckState();
   for(int i=0 ; i<TOTAL_FLASH_SIZE ; i++)
     TEST_ASSERT_EQUAL_HEX8(0xff, *(dst++));
+  free(flashState.flashAddr);
 }
 
