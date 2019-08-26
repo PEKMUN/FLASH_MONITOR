@@ -1,14 +1,11 @@
 #ifndef _FLASH_MONITOR_H
 #define _FLASH_MONITOR_H
+
 #include <stdint.h>
 #include <stdio.h>
+#include "UserDefine.h"
 
 #define KB	                  1024
-#define TRANFER_BUFFER_SIZE   (2*KB)
-#define FLASH_PAGE_SIZE		    0x400U
-
-// Error number
-#define INVALID_ADDRESS	1
 
 typedef enum {
   TARGET_NOT_READY,
@@ -30,6 +27,6 @@ struct FlashState {
 extern uint8_t transferBuffer[];
 
 uint32_t readFlash(uint32_t addr);
-void flashCheckState(int data);
+void flashCheckState(void);
 
 #endif // _FLASH_MONITOR_H
