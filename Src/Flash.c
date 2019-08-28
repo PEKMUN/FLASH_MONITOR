@@ -15,10 +15,14 @@ void flashMassErase()
 }
 
 // Page erase ==> FLASH_PageErase(uint32_t PageAddress)
-void flashPageErase(uint32_t pageAddress)
+void flashPageErase(uint32_t pageAddress, int numOfSector)
 {
 	HAL_FLASH_Unlock();
-	FLASH_PageErase(pageAddress);
+	for(int i=0 ; i<numOfSector ; i++)
+	{
+		FLASH_PageErase(pageAddress);
+		pageAddress+=FLASH_PAGE_SIZE;
+	}
 	HAL_FLASH_Lock();
 }
 

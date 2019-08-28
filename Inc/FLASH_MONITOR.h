@@ -22,6 +22,8 @@ struct FlashState {
 	int blockSize;
 	uint32_t flashAddr;
 	int dataSize;
+	int sector;
+	int numOfSector;
 };
 
 extern uint8_t transferBuffer[];

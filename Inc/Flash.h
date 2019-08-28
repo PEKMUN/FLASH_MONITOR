@@ -4,6 +4,6 @@
 
 void writeFlash(uint32_t addr, uint32_t data);
 void flashMassErase();
-void flashPageErase(uint32_t pageAddress);
+void flashPageErase(uint32_t pageAddress, int numOfSector);
 
 #endif // _FLASH_H

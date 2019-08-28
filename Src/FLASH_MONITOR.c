@@ -58,6 +58,11 @@ void flashCheckState(void)
 	  case TARGET_READY:
 		  break;
 
+	  case PAGE_ERASE:
+		  flashPageErase(flashState.sector , flashState.numOfSector);
+		  flashState.command = TARGET_READY;
+		  break;
+
 	  default:
 		  break;
 	}
